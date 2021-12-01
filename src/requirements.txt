@@ -1,0 +1,11 @@
+# Include everything the framework requires
+# You will automatically get updates for all versions starting with "1.".
+rlbot==1.*
+rlgym-compat>=1.0.2
+rlbot_gui
+eel
+
+rlgym==1.1.0
+rlgym-tools==1.4.0
+stable-baselines3[extra]
+numpy
