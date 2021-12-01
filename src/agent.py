@@ -12,11 +12,9 @@ class Agent:
             path=get_latest_path(),
             device=TRAIN_DEVICE,
         )
-        self.prev_states = None
         self.action_parser = DiscreteAction()
 
     def act(self, obs: list, game_state: GameState):
         # Evaluate your model here
-        action, self.prev_states = self.actor.predict(obs, self.prev_states)
-        action = self.action_parser.parse_actions(action, game_state)[0]
-        return action
+        action, _ = self.actor.predict(obs)
+        return self.action_parser.parse_actions(action, game_state)[0]

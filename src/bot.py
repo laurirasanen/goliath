@@ -16,8 +16,6 @@ class GoliathBot(BaseAgent):
         self.obs_builder = GoliathObs()
         # Your neural network logic goes inside the Agent class, go take a look inside src/agent.py
         self.agent = Agent()
-        # Adjust the tickskip if your agent was trained with a different value
-        self.tick_skip = TICK_SKIP
 
         self.game_state: GameState = None
         self.controls = None
@@ -30,7 +28,7 @@ class GoliathBot(BaseAgent):
     def initialize_agent(self):
         # Initialize the GameState object now that the game is active and the info is available
         self.game_state = GameState(self.get_field_info())
-        self.ticks = self.tick_skip  # So we take an action the first tick
+        self.ticks = TICK_SKIP  # So we take an action the first tick
         self.update_action = True
         self.prev_time = 0
         self.controls = SimpleControllerState()
@@ -59,7 +57,7 @@ class GoliathBot(BaseAgent):
             obs = self.obs_builder.build_obs(player, self.game_state, self.action)
             self.action = self.agent.act(obs, self.game_state)
 
-        if self.ticks >= self.tick_skip:
+        if self.ticks >= TICK_SKIP:
             self.ticks = 0
             self.update_controls(self.action)
             self.update_action = True
