@@ -1,4 +1,5 @@
-models/
+models/*
+!models/model_20211201-231935_8204607488_4532005.zip
 out/
 
 # Byte-compiled / optimized / DLL files
