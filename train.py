@@ -95,7 +95,6 @@ def get_matches(args):
             raise f"Unknown scenario {scenario}"
 
         # create match
-        self_play = False
         matches.append(
             Match(
                 reward_function=reward_function,
@@ -103,8 +102,8 @@ def get_matches(args):
                 obs_builder=GoliathObs(),
                 action_parser=DiscreteAction(),
                 state_setter=state_setter,
-                self_play=self_play,
-                spawn_opponents=not self_play,
+                self_play=args.self_play,
+                spawn_opponents=not args.self_play,
                 tick_skip=TICK_SKIP,
                 game_speed=100,
             )
@@ -202,6 +201,14 @@ if __name__ == "__main__":
         help="Wait time between environment launches",
         type=int,
         default=15,
+    )
+    parser.add_argument(
+        "-sp",
+        "--self_play",
+        dest="self_play",
+        help="Play against self, spawn Psyonix bot if false",
+        type=bool,
+        default=True,
     )
     args = parser.parse_args()
     print(
