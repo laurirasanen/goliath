@@ -545,7 +545,7 @@ class LandOnWheelsReward(RewardFunction):
             and player.car_data.linear_velocity[2] < 0
             and player.car_data.position[2] < 50.0
         ):
-            return np.dot(player.car_data.up, [0, 0, 1])
+            return np.dot(player.car_data.up(), [0, 0, 1])
 
         return 0
 
