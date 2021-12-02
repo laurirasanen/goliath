@@ -239,7 +239,8 @@ class BangReward(RewardFunction):
 
 
 class ShootReward(RewardFunction):
-    def __init__(self):
+    def __init__(self, power=2.0):
+        self.power = power
         self.prev_ball_vel = np.zeros(3)
 
     def reset(self, initial_state: GameState):
@@ -253,17 +254,19 @@ class ShootReward(RewardFunction):
             # but hopefully it encourages higher shots since
             # the ball will drop during flight.
             if player.team_num == 0:
-                target_pos = np.array(ORANGE_GOAL_BACK) + [0, 0, 0.8 * GOAL_HEIGHT]
+                target_pos = np.array(ORANGE_GOAL_BACK) + [0, 0, GOAL_HEIGHT]
             else:
-                target_pos = np.array(BLUE_GOAL_BACK) + [0, 0, 0.8 * GOAL_HEIGHT]
+                target_pos = np.array(BLUE_GOAL_BACK) + [0, 0, GOAL_HEIGHT]
 
             target_dir = target_pos - state.ball.position
             target_dir /= np.linalg.norm(target_dir)
 
             prev_dot = np.dot(self.prev_ball_vel, target_dir)
             new_dot = np.dot(state.ball.linear_velocity, target_dir)
-            is_negative = new_dot < prev_dot
-            return np.sqrt(abs(new_dot - prev_dot)) * (-1 if is_negative else 1)
+            diff = new_dot - prev_dot
+            # 1000 unit/s diff -> 1.0 reward
+            # 12000 unit/s diff -> 144.0 reward (BALL_MAX_SPEED * 2.0)
+            return (diff ** self.power) / (1000 ** self.power)
 
         self.prev_ball_vel = state.ball.linear_velocity
         return 0
@@ -319,9 +322,9 @@ class LiuDistanceBallToGoalReward(RewardFunction):
             or player.team_num == ORANGE_TEAM
             and self.own_goal
         ):
-            objective = np.array(ORANGE_GOAL_BACK)
+            objective = np.array(ORANGE_GOAL_BACK) + [0, 0, 0.5 * GOAL_HEIGHT]
         else:
-            objective = np.array(BLUE_GOAL_BACK)
+            objective = np.array(BLUE_GOAL_BACK) + [0, 0, 0.5 * GOAL_HEIGHT]
 
         # Compensate for moving objective to back of net
         dist = np.linalg.norm(state.ball.position - objective) - (
@@ -350,9 +353,9 @@ class VelocityBallToGoalReward(RewardFunction):
             or player.team_num == ORANGE_TEAM
             and self.own_goal
         ):
-            objective = np.array(ORANGE_GOAL_BACK)
+            objective = np.array(ORANGE_GOAL_BACK) + [0, 0, 0.5 * GOAL_HEIGHT]
         else:
-            objective = np.array(BLUE_GOAL_BACK)
+            objective = np.array(BLUE_GOAL_BACK) + [0, 0, 0.5 * GOAL_HEIGHT]
 
         vel = state.ball.linear_velocity
         pos_diff = objective - state.ball.position
@@ -523,11 +526,11 @@ class DribbleReward(RewardFunction):
         dist = np.linalg.norm(to_ball)
 
         # close to ball = good
-        near_reward = 10.0 / max(dist, BALL_RADIUS)
+        near_reward = 4.0 / max(dist, BALL_RADIUS)
 
         # ball near above = good
         above_dot = np.dot([0, 0, 1], to_ball)
-        dist_from_above = abs((2.0 * BALL_RADIUS) - above_dot)
+        dist_from_above = abs((2.5 * BALL_RADIUS) - above_dot)
         above_reward = 5.0 / max(dist_from_above, 0.1)
 
         return touch_reward + near_reward + above_reward
@@ -552,8 +555,8 @@ class LandOnWheelsReward(RewardFunction):
         return 0
 
 
-accel_reward = DiffReward(VelocityReward(), 0.5)
-pickup_boost_reward = DiffReward(BoostReward(), 0.5)
+accel_reward = DiffReward(VelocityReward(), 1.0)
+pickup_boost_reward = DiffReward(BoostReward(), 0.8)
 
 
 def get_reward_function(scenario: str = "default"):
@@ -561,25 +564,25 @@ def get_reward_function(scenario: str = "default"):
         pickup_boost_reward,
         accel_reward,
         VelocityReward(),
-        TouchBallReward(aerial_weight=2.0),
+        TouchBallReward(aerial_weight=4.0),
         BangReward(),
-        ShootReward(),
+        ShootReward(power=3.0),
         DribbleReward(),
         ClearReward(),
         AlignBallGoal(),
         DoubleEventReward(
             # us
-            200,
-            0,  # separate touch rewards
-            5,
-            50,
-            50,
+            500,
+            0,  # separate touch reward
+            0,  # separate shot reward
+            300,
+            100,
             # enemy
-            -10,
+            -100,
             -1,
-            -5,
-            -5,
-            -200,  # stop getting demo'd you dummy
+            -10,
+            -10,
+            -300,  # stop getting demo'd you dummy
         ),
         FaceBallReward(),
         LiuDistanceBallToGoalReward(),
@@ -594,25 +597,25 @@ def get_reward_function(scenario: str = "default"):
     )
 
     weights = (
-        0.05,  # pickup_boost_reward
-        5.0,  # accel_reward
-        60.0,  # VelocityReward
-        150.0,  # TouchBallReward
+        0.03,  # pickup_boost_reward
+        10.0,  # accel_reward
+        75.0,  # VelocityReward
+        125.0,  # TouchBallReward
         30.0,  # BangReward
-        250.0,  # ShootReward
+        2000.0,  # ShootReward
         0.1,  # DribbleReward
-        40.0,  # ClearReward
-        25.0,  # AlignBallGoal
+        50.0,  # ClearReward
+        35.0,  # AlignBallGoal
         1.0,  # DoubleEventReward
-        20.0,  # FaceBallReward
-        60.0,  # LiuDistanceBallToGoalReward
-        150.0,  # VelocityBallToGoalReward
-        45.0,  # VelocityPlayerToBallReward
+        15.0,  # FaceBallReward
+        80.0,  # LiuDistanceBallToGoalReward
+        175.0,  # VelocityBallToGoalReward
+        100.0,  # VelocityPlayerToBallReward
         15.0,  # KickoffReward
         0.08,  # GroundedReward
-        40.0,  # FaceTowardsVelocity
-        20.0,  # LiuDistancePlayerToBallReward
-        0.025,  # DistanceToFutureBallReward
+        65.0,  # FaceTowardsVelocity
+        25.0,  # LiuDistancePlayerToBallReward
+        1.0,  # DistanceToFutureBallReward
         0.5,  # LandOnWheelsReward
     )
 
