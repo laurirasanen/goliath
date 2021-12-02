@@ -523,7 +523,7 @@ class DribbleReward(RewardFunction):
         dist = np.linalg.norm(to_ball)
 
         # close to ball = good
-        near_reward = 30.0 / max(dist, BALL_RADIUS)
+        near_reward = 10.0 / max(dist, BALL_RADIUS)
 
         # ball near above = good
         above_dot = np.dot([0, 0, 1], to_ball)
@@ -600,18 +600,18 @@ def get_reward_function(scenario: str = "default"):
         150.0,  # TouchBallReward
         30.0,  # BangReward
         250.0,  # ShootReward
-        0.3,  # DribbleReward
-        30.0,  # ClearReward
+        0.1,  # DribbleReward
+        40.0,  # ClearReward
         25.0,  # AlignBallGoal
         1.0,  # DoubleEventReward
-        15.0,  # FaceBallReward
+        20.0,  # FaceBallReward
         60.0,  # LiuDistanceBallToGoalReward
         150.0,  # VelocityBallToGoalReward
         45.0,  # VelocityPlayerToBallReward
         15.0,  # KickoffReward
         0.08,  # GroundedReward
-        30.0,  # FaceTowardsVelocity
-        15.0,  # LiuDistancePlayerToBallReward
+        40.0,  # FaceTowardsVelocity
+        20.0,  # LiuDistancePlayerToBallReward
         0.025,  # DistanceToFutureBallReward
         0.5,  # LandOnWheelsReward
     )
