@@ -49,23 +49,23 @@ def get_matches(args):
             # 1 kickoff instances
             if x == 0:
                 scenario = "kickoff"
-            # 2 default
-            elif x == 1:
-                scenario = "default"
             # 1 random attack
-            elif x == 3:
+            elif x == 1:
                 scenario = "attack"
             # 1 dribble
-            elif x == 4:
+            elif x == 2:
                 scenario = "dribble"
-            # rest shooting practice
-            elif x == 5:
+            # 2 shooting practice
+            elif x == 3:
                 scenario = "shoot"
+            # rest default
+            elif x == 5:
+                scenario = "default"
 
         # defaults
         state_setter = KickoffState()
         terminal_conditions = [
-            NoTouchTimeoutCondition(seconds_to_steps(8)),
+            NoTouchTimeoutCondition(seconds_to_steps(20)),
             GoalScoredCondition(),
         ]
         reward_function = get_reward_function(scenario)
@@ -88,7 +88,7 @@ def get_matches(args):
         elif scenario == "shoot":
             state_setter = ShootState()
             terminal_conditions = [
-                NoTouchTimeoutCondition(seconds_to_steps(4)),
+                NoTouchTimeoutCondition(seconds_to_steps(6)),
                 GoalScoredCondition(),
             ]
         else:
