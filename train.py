@@ -105,7 +105,7 @@ def get_matches(args):
                 self_play=args.self_play,
                 spawn_opponents=not args.self_play,
                 tick_skip=TICK_SKIP,
-                game_speed=100,
+                game_speed=args.game_speed,
             )
         )
 
@@ -203,6 +203,14 @@ if __name__ == "__main__":
         default=15,
     )
     parser.add_argument(
+        "-gs",
+        "--game_speed",
+        dest="game_speed",
+        help="Speed to run the game at",
+        type=int,
+        default=100,
+    )
+    parser.add_argument(
         "-sp",
         "--self_play",
         dest="self_play",
@@ -225,11 +233,10 @@ if __name__ == "__main__":
     # Testing model.predict
     # Bot is behaving weirdly in rlbot, fine in training
     if args.test:
+        obs = model.env.reset()
         while True:
-            obs = model.env.reset()
-            for i in range(100):
-                action, _states = model.predict(obs)
-                obs, rewards, dones, info = model.env.step(action)
+            action, _states = model.predict(obs)
+            obs, rewards, dones, info = model.env.step(action)
 
     # Train
     print(
