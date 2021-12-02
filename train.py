@@ -210,12 +210,31 @@ if __name__ == "__main__":
         type=bool,
         default=True,
     )
+    parser.add_argument(
+        "-t",
+        "--test",
+        dest="test",
+        help="Test model.predict",
+        type=bool,
+        default=False,
+    )
     args = parser.parse_args()
+
+    model, num_timesteps, elapsed_time = get_model(args)
+
+    # Testing model.predict
+    # Bot is behaving weirdly in rlbot, fine in training
+    if args.test:
+        while True:
+            obs = model.env.reset()
+            for i in range(100):
+                action, _states = model.predict(obs)
+                obs, rewards, dones, info = model.env.step(action)
+
+    # Train
     print(
         f"Training for {args.scenario} scenario with {args.environments} environments"
     )
-
-    model, num_timesteps, elapsed_time = get_model(args)
     SAVE_INTERVAL = round(10_000_000 / model.n_envs)
     while True:
         model.learn(total_timesteps=SAVE_INTERVAL)
