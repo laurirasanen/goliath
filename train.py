@@ -46,17 +46,17 @@ def get_matches(args):
     for x in range(args.environments):
         # Handle switching scenarios if "mixed"
         if args.scenario == "mixed":
-            # 1 kickoff instance
+            # 1 kickoff instances
             if x == 0:
                 scenario = "kickoff"
-            # 1 default
+            # 2 default
             elif x == 1:
                 scenario = "default"
             # 1 random attack
-            elif x == 2:
-                scenario = "attack"
-            # 2 dribble
             elif x == 3:
+                scenario = "attack"
+            # 1 dribble
+            elif x == 4:
                 scenario = "dribble"
             # rest shooting practice
             elif x == 5:
