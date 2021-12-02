@@ -102,8 +102,8 @@ def get_matches(args):
                 obs_builder=GoliathObs(),
                 action_parser=DiscreteAction(),
                 state_setter=state_setter,
-                self_play=args.self_play,
-                spawn_opponents=not args.self_play,
+                self_play=args.self_play > 0,
+                spawn_opponents=args.self_play <= 0,
                 tick_skip=TICK_SKIP,
                 game_speed=args.game_speed,
             )
@@ -215,8 +215,8 @@ if __name__ == "__main__":
         "--self_play",
         dest="self_play",
         help="Play against self, spawn Psyonix bot if false",
-        type=bool,
-        default=True,
+        type=int,
+        default=1,
     )
     parser.add_argument(
         "-t",
