@@ -572,11 +572,11 @@ def get_reward_function(scenario: str = "default"):
         AlignBallGoal(),
         DoubleEventReward(
             # us
-            500,
+            1000,
             0,  # separate touch reward
             0,  # separate shot reward
-            300,
-            100,
+            500,
+            200,
             # enemy
             -100,
             -1,
@@ -599,22 +599,22 @@ def get_reward_function(scenario: str = "default"):
     weights = (
         0.03,  # pickup_boost_reward
         10.0,  # accel_reward
-        75.0,  # VelocityReward
+        100.0,  # VelocityReward
         125.0,  # TouchBallReward
         30.0,  # BangReward
-        2000.0,  # ShootReward
+        3000.0,  # ShootReward
         0.1,  # DribbleReward
-        50.0,  # ClearReward
-        35.0,  # AlignBallGoal
+        100.0,  # ClearReward
+        100.0,  # AlignBallGoal
         1.0,  # DoubleEventReward
         15.0,  # FaceBallReward
         80.0,  # LiuDistanceBallToGoalReward
         175.0,  # VelocityBallToGoalReward
-        100.0,  # VelocityPlayerToBallReward
-        15.0,  # KickoffReward
-        0.08,  # GroundedReward
-        65.0,  # FaceTowardsVelocity
-        25.0,  # LiuDistancePlayerToBallReward
+        150.0,  # VelocityPlayerToBallReward
+        20.0,  # KickoffReward
+        0.1,  # GroundedReward
+        100.0,  # FaceTowardsVelocity
+        20.0,  # LiuDistancePlayerToBallReward
         1.0,  # DistanceToFutureBallReward
         0.5,  # LandOnWheelsReward
     )
