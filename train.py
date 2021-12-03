@@ -123,6 +123,7 @@ def get_model(args):
         match_func_or_matches=get_matches(args),
         num_instances=args.environments,
         wait_time=args.wait,
+        force_paging=args.force_paging > 0,
     )
     # env = SB3MultiDiscreteWrapper(env)
     env = VecCheckNan(env)  # Optional
@@ -219,6 +220,14 @@ if __name__ == "__main__":
         default=1,
     )
     parser.add_argument(
+        "-fp",
+        "--force_paging",
+        dest="force_paging",
+        help="Force windows paging on game launch",
+        type=int,
+        default=0,
+    )
+    parser.add_argument(
         "-t",
         "--test",
         dest="test",
@@ -243,10 +252,14 @@ if __name__ == "__main__":
         f"Training for {args.scenario} scenario with {args.environments} environments"
     )
     SAVE_INTERVAL = round(10_000_000 / model.n_envs)
-    while True:
-        model.learn(total_timesteps=SAVE_INTERVAL)
-        num_timesteps += model.num_timesteps * model.n_envs
-        elapsed_time += int(time.time() - model.start_time) * model.n_envs
-        filename = f"models/model_{datetime.datetime.now().strftime('%Y%m%d-%H%M%S')}_{num_timesteps}_{elapsed_time}.zip"
-        print(f"Saving model to {filename}")
-        model.save(filename)
+    try:
+        while True:
+            model.learn(total_timesteps=SAVE_INTERVAL)
+            num_timesteps += model.num_timesteps * model.n_envs
+            elapsed_time += int(time.time() - model.start_time) * model.n_envs
+            filename = f"models/model_{datetime.datetime.now().strftime('%Y%m%d-%H%M%S')}_{num_timesteps}_{elapsed_time}.zip"
+            print(f"Saving model to {filename}")
+            model.save(filename)
+    except KeyboardInterrupt:
+        model.env.close()
+        exit()
