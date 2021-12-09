@@ -597,23 +597,23 @@ def get_reward_function(scenario: str = "default"):
     )
 
     weights = (
-        0.03,  # pickup_boost_reward
+        0.05,  # pickup_boost_reward
         10.0,  # accel_reward
         100.0,  # VelocityReward
         125.0,  # TouchBallReward
         30.0,  # BangReward
-        3000.0,  # ShootReward
+        4000.0,  # ShootReward
         0.1,  # DribbleReward
-        100.0,  # ClearReward
-        100.0,  # AlignBallGoal
+        300.0,  # ClearReward
+        300.0,  # AlignBallGoal
         1.0,  # DoubleEventReward
-        15.0,  # FaceBallReward
+        50.0,  # FaceBallReward
         80.0,  # LiuDistanceBallToGoalReward
         175.0,  # VelocityBallToGoalReward
-        150.0,  # VelocityPlayerToBallReward
-        20.0,  # KickoffReward
-        0.1,  # GroundedReward
-        100.0,  # FaceTowardsVelocity
+        300.0,  # VelocityPlayerToBallReward
+        100.0,  # KickoffReward
+        0.15,  # GroundedReward
+        250.0,  # FaceTowardsVelocity
         20.0,  # LiuDistancePlayerToBallReward
         1.0,  # DistanceToFutureBallReward
         0.5,  # LandOnWheelsReward
