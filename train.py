@@ -255,7 +255,7 @@ if __name__ == "__main__":
     print(
         f"Training for {args.scenario} scenario with {args.environments} environments"
     )
-    SAVE_INTERVAL = round(10_000_000 / model.n_envs)
+    SAVE_INTERVAL = round(1_000_000 / model.n_envs)
     try:
         while True:
             model.learn(total_timesteps=SAVE_INTERVAL)
