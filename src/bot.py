@@ -39,7 +39,7 @@ class GoliathBot(BaseAgent):
         delta = cur_time - self.prev_time
         self.prev_time = cur_time
 
-        ticks_elapsed = delta // 0.008  # Smaller than 1/120 on purpose
+        ticks_elapsed = round(delta * 120)
         self.ticks += ticks_elapsed
         self.game_state.decode(packet, ticks_elapsed)
 
@@ -57,7 +57,7 @@ class GoliathBot(BaseAgent):
             obs = self.obs_builder.build_obs(player, self.game_state, self.action)
             self.action = self.agent.act(obs, self.game_state)
 
-        if self.ticks >= TICK_SKIP:
+        if self.ticks >= TICK_SKIP - 1:
             self.ticks = 0
             self.update_controls(self.action)
             self.update_action = True
