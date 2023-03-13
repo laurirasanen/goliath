@@ -139,7 +139,11 @@ def get_model(args):
         model = PPO.load(
             path=filepath,
             env=env,
-            custom_objects=dict(n_envs=env.num_envs),  # needed for changing num envs
+            custom_objects=dict(
+                n_envs=env.num_envs,
+                lr_schedule=0.000001,
+                clip_range=0.02,
+            ),  # needed for changing parameters
             device=TRAIN_DEVICE,
         )
         print(f"Loaded model {filepath}")
