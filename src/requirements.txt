@@ -2,8 +2,8 @@
 # You will automatically get updates for all versions starting with "1.".
 rlbot==1.*
 --find-links https://download.pytorch.org/whl/torch_stable.html
-torch==1.5.1+cpu
-rlgym-compat>=1.0.2
+torch==1.9.1+cpu
+rlgym-compat>=1.1.0
 rlbot_gui
 eel
 
