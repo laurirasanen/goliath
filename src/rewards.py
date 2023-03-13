@@ -555,7 +555,7 @@ class LandOnWheelsReward(RewardFunction):
         return 0
 
 
-accel_reward = DiffReward(VelocityReward(), 1.0)
+accel_reward = DiffReward(VelocityReward(), 0.8)
 pickup_boost_reward = DiffReward(BoostReward(), 0.8)
 
 
@@ -599,7 +599,7 @@ def get_reward_function(scenario: str = "default"):
     weights = (
         0.05,  # pickup_boost_reward
         10.0,  # accel_reward
-        100.0,  # VelocityReward
+        200.0,  # VelocityReward
         125.0,  # TouchBallReward
         30.0,  # BangReward
         4000.0,  # ShootReward
