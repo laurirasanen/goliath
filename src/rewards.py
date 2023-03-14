@@ -555,7 +555,7 @@ class LandOnWheelsReward(RewardFunction):
         return 0
 
 
-accel_reward = DiffReward(VelocityReward(), 0.8)
+accel_reward = DiffReward(VelocityReward(), 0.5)
 pickup_boost_reward = DiffReward(BoostReward(), 0.8)
 
 
@@ -564,9 +564,9 @@ def get_reward_function(scenario: str = "default"):
         pickup_boost_reward,
         accel_reward,
         VelocityReward(),
-        TouchBallReward(aerial_weight=4.0),
+        TouchBallReward(aerial_weight=5.0),
         BangReward(),
-        ShootReward(power=3.0),
+        ShootReward(power=6.0),
         DribbleReward(),
         ClearReward(),
         AlignBallGoal(),
@@ -598,10 +598,10 @@ def get_reward_function(scenario: str = "default"):
 
     weights = (
         0.1,  # pickup_boost_reward
-        15.0,  # accel_reward
-        400.0,  # VelocityReward
-        125.0,  # TouchBallReward
-        50.0,  # BangReward
+        50.0,  # accel_reward
+        2000.0,  # VelocityReward
+        50.0,  # TouchBallReward
+        100.0,  # BangReward
         10000.0,  # ShootReward
         0.1,  # DribbleReward
         300.0,  # ClearReward
@@ -610,7 +610,7 @@ def get_reward_function(scenario: str = "default"):
         50.0,  # FaceBallReward
         80.0,  # LiuDistanceBallToGoalReward
         175.0,  # VelocityBallToGoalReward
-        400.0,  # VelocityPlayerToBallReward
+        2000.0,  # VelocityPlayerToBallReward
         100.0,  # KickoffReward
         0.15,  # GroundedReward
         250.0,  # FaceTowardsVelocity
