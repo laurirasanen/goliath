@@ -65,7 +65,7 @@ def get_matches(args):
         # defaults
         state_setter = KickoffState()
         terminal_conditions = [
-            NoTouchTimeoutCondition(seconds_to_steps(20)),
+            NoTouchTimeoutCondition(seconds_to_steps(6)),
             GoalScoredCondition(),
         ]
         reward_function = get_reward_function(scenario)
@@ -160,13 +160,13 @@ def get_model(args):
             policy="MlpPolicy",
             env=env,
             n_epochs=32,  # PPO calls for multiple epochs
-            learning_rate=1e-5,  # Around this is fairly common for PPO
+            learning_rate=1e-4,  # Around this is fairly common for PPO
             ent_coef=0.01,  # From PPO Atari
             vf_coef=1.0,  # From PPO Atari
             gamma=gamma,  # Gamma as calculated using half-life
             verbose=3,  # Print out all the info as we're going
-            batch_size=4096,  # Batch size as high as possible within reason
-            n_steps=4096,  # Number of steps to perform before optimizing network
+            batch_size=8192,  # Batch size as high as possible within reason
+            n_steps=16384,  # Number of steps to perform before optimizing network
             tensorboard_log="out/logs",  # `tensorboard --logdir out/logs` in terminal to see graphs
             device=TRAIN_DEVICE,
         )
@@ -255,7 +255,7 @@ if __name__ == "__main__":
     print(
         f"Training for {args.scenario} scenario with {args.environments} environments"
     )
-    SAVE_INTERVAL = round(1_000_000 / model.n_envs)
+    SAVE_INTERVAL = round(2_000_000 / model.n_envs)
     try:
         while True:
             model.learn(total_timesteps=SAVE_INTERVAL)
