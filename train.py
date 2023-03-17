@@ -165,8 +165,8 @@ def get_model(args):
             vf_coef=1.0,  # From PPO Atari
             gamma=gamma,  # Gamma as calculated using half-life
             verbose=3,  # Print out all the info as we're going
-            batch_size=8192,  # Batch size as high as possible within reason
-            n_steps=16384,  # Number of steps to perform before optimizing network
+            batch_size=100_000,  # Batch size as high as possible within reason
+            n_steps=1_000_000,  # Number of steps to perform before optimizing network
             tensorboard_log="out/logs",  # `tensorboard --logdir out/logs` in terminal to see graphs
             device=TRAIN_DEVICE,
         )
