@@ -328,7 +328,7 @@ class AttackState(StateSetter):
             pos[0], pos[1] = fix_spawn_position(pos[0], pos[1])
             car.set_pos(*pos)
             car.set_rot(yaw=yaw, pitch=pitch, roll=roll)
-            car.boost = random.uniform(0.2, 0.8)
+            car.boost = random.uniform(0.0, 1.0)
             car.set_lin_vel(*vel)
             car.set_ang_vel(*ang_vel)
 
@@ -466,7 +466,7 @@ class ShootState(StateSetter):
             pos[0], pos[1] = fix_spawn_position(pos[0], pos[1])
             car.set_pos(*pos)
             car.set_rot(yaw=yaw)
-            car.boost = random.uniform(0.2, 0.8)
+            car.boost = random.uniform(0.0, 1.0)
             car.set_lin_vel(*vel)
 
 
@@ -606,5 +606,5 @@ class DribbleState(StateSetter):
             pos[0], pos[1] = fix_spawn_position(pos[0], pos[1])
             car.set_pos(*pos)
             car.set_rot(yaw=yaw)
-            car.boost = random.uniform(0.2, 0.8)
+            car.boost = random.uniform(0.0, 1.0)
             car.set_lin_vel(*vel)
