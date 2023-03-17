@@ -596,15 +596,16 @@ def get_reward_function(scenario: str = "default"):
         LandOnWheelsReward(),
     )
 
+    # these are messed up
     weights = (
         0.1,  # pickup_boost_reward
         50.0,  # accel_reward
-        2000.0,  # VelocityReward
+        5000.0,  # VelocityReward
         50.0,  # TouchBallReward
         100.0,  # BangReward
         10000.0,  # ShootReward
-        0.1,  # DribbleReward
-        300.0,  # ClearReward
+        1.0,  # DribbleReward
+        1000.0,  # ClearReward
         300.0,  # AlignBallGoal
         1.0,  # DoubleEventReward
         50.0,  # FaceBallReward
@@ -616,7 +617,7 @@ def get_reward_function(scenario: str = "default"):
         250.0,  # FaceTowardsVelocity
         20.0,  # LiuDistancePlayerToBallReward
         1.0,  # DistanceToFutureBallReward
-        0.5,  # LandOnWheelsReward
+        20.0,  # LandOnWheelsReward
     )
 
     return CombinedReward(
